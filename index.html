@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowers For You?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffb6c1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* สติ๊กเกอร์หัวใจลอยพื้นหลัง */
+        .floating-sticker {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 4s linear infinite;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            background-color: transparent;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .gif-box img {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        h1 {
+            color: #000;
+            margin: 20px 0;
+            font-size: 28px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            position: relative;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+
+        #yesBtn {
+            background-color: #2ecc71;
+            z-index: 20;
+        }
+
+        #noBtn {
+            background-color: #e74c3c;
+            position: relative;
+            z-index: 20;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #resultScreen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #111;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        #resultScreen img {
+            width: 250px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- พื้นหลังสติ๊กเกอร์ลอย -->
+    <div class="floating-sticker" style="left: 10%; animation-delay: 0s;">💖</div>
+    <div class="floating-sticker" style="left: 30%; animation-delay: 2s;">🌸</div>
+    <div class="floating-sticker" style="left: 70%; animation-delay: 1s;">✨</div>
+    <div class="floating-sticker" style="left: 85%; animation-delay: 3s;">💐</div>
+
+    <div class="container" id="mainScreen">
+        <div class="gif-box">
+<img id="mainImage" src="https://i.imgur.com/oeyXJcX.gif" alt="Cute Sticker">
+
+        </div>
+        <h1 id="questionText">ເຟັນຟາຍເອົາດອກໄມ້ບໍ?</h1>
+        <div class="btn-group">
+            <button id="yesBtn" onclick="sayYes()">Yes</button>
+            <button id="noBtn" onmouseover="handleNoInteraction()" ontouchstart="handleNoInteraction()" onclick="handleNoInteraction()">No</button>
+        </div>
+    </div>
+
+    <div id="resultScreen" class="hidden">
+        <img src="https://media.tenor.com/LF3tjgQwQPEAAAAi/kiss.gif" alt="Rose">
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mainScreen = document.getElementById('mainScreen');
+        const resultScreen = document.getElementById('resultScreen');
+
+        const noMessages = [
+            "No",
+            "ແນ່ໃຈນະ?",
+            "ຄິດດີໆ!",
+            "ຮື~~!",
+            "ກົດ YES ເຖີະນະະ 🥺",
+            "ຈະກົດດີໆຫຼືສິກົດດ້ວຍນ້ຳຕາ"
+        ];
+        
+        let clickCount = 0;
+
+        function handleNoInteraction() {
+            clickCount++;
+            
+            if (clickCount < noMessages.length) {
+                noBtn.innerText = noMessages[clickCount];
+            } else {
+                noBtn.innerText = "ກົດບໍ່ຖືກດອກ 😜";
+            }
+
+            let currentSize = 18 + (clickCount * 3);
+            yesBtn.style.fontSize = currentSize + 'px';
+            yesBtn.style.padding = (10 + clickCount) + 'px ' + (30 + clickCount * 5) + 'px';
+
+            const padding = 50;
+            const randomX = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
+            const randomY = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        function sayYes() {
+            mainScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
